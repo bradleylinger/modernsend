@@ -11,129 +11,423 @@
     <script src="kendo/js/kendo.mobile.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
+            <script src="scripts/data.js"></script>
+            <script src="scripts/getRate.js"></script>
+
     <script src="scripts/app.js"></script>
     <script src="scripts/login.js"></script>
     <script src="scripts/location.js"></script>
     <script src="scripts/weather.js"></script>
+            <script src="scripts/tracker.js"></script>
+
+
 </head>
-<body>
-    <!--Home View-->
-    <div id="tabstrip-home"
-        data-role="view"
-        data-title="Home">
-        <header data-role="header">
-            <div data-role="navbar">
-                <span data-role="view-title"></span>
-                <a id="skin-change" data-role="button" data-align="right" data-click="app.changeSkin">Flat</a>
+ <body>
+        <!--Home-->
+        <div id="tabstrip-rates" 
+             data-role="view"
+             data-title="Rates"
+             data-model="app.getrateService.viewModel">
+            <div class="view-content"> 
+                <!--<ul id="artistsListView" data-role="listview" data-style="inset"></ul>-->
+        <form id="rateForm">
+                
+                <ul style="list-style-type:none;">
+                    <li>
+                        <label for="from" class="required">From</label>
+                        <input type="number" id="from" placeholder="Zip Code" required validationMessage="<br />Enter Valid Zip Code" />
+                    </li> 
+                    <li>
+                        	<label for="to" class="required">To</label>
+							<input type="number" id="to" placeholder="Zip Code" required validationMessage="<br />Enter Valid Postal Code" />
+                    </li>
+                     <li>
+                        <label for="txtWidth">
+                            Weight
+                        </label>
+						<input type="number" id="txtWeight" placeholder="in pounds" required validationMessage="<br />Enter Valid Weight" />
+                    </li>
+                     <li>
+                        <label for="txtLength">
+                            Length 
+                        </label>
+                         <input type="number" id="txtLength" placeholder="in inches" />
+                    </li>
+                     <li>
+                        <label for="txtHeight">
+                            Height 
+                        </label>
+                         <input type="number" id="txtHeight" placeholder="in inches" />
+                    </li>
+                      <li>
+                        <label for="txtWeight">
+                            Width 
+                        </label>
+                          <input type="number" id="txtWidth" placeholder="in inches" />
+                    </li>
+                     <li class="status">
+                    </li>
+                </ul>
+                <div class="buttonArea">
+                    <input type="submit" id="btnGetRate" data-role="button" data-bind="click: onGetRate" value="Get Rate" />
+                </div>
+                </form>
+                <ul id="rateListView" data-role="listview"  data-style="inset"></ul>
             </div>
-        </header>
-
-        <h3>Welcome!</h3>
-        <p>
-            Telerik AppBuilder&trade; enables you to build cross-platform device applications regardless of your
-            development platform by combining the convenience of a local development toolset with the
-            power and flexibility of the cloud.
-        </p>
-        <div class="welcome-image"></div>
-    </div>
-
-    <!--Login View-->
-    <div id="tabstrip-login"
-        data-role="view"
-        data-title="Login"
-        data-model="app.loginService.viewModel">
-
-        <div class="logo-image"></div>
-        <div>
-            <h3 data-bind="visible: isLoggedIn">Welcome, <span data-bind="    text: username"></span>!</h3>
-            <input id="logout" type="submit" data-role="button" data-bind="click: onLogout, visible: isLoggedIn" value="Logout" class="login-button" />
         </div>
-        <form data-bind="events: { keyup: checkEnter }">
-            <h3 data-bind="invisible: isLoggedIn">Enter your credentials:</h3>
-            <ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn">
+        
+        <!--Login
+<div id="tabstrip-login"
+data-role="view"
+data-title="Login"
+data-model="app.loginService.viewModel">
+
+<div class="view-content">
+<div class="logo"></div>
+<h3 data-bind="invisible: isLoggedIn">Enter your credentials:</h3>
+<h1 class="welcome" data-bind="visible: isLoggedIn">Welcome, <span data-bind="text: username"></span>!
+</h1>
+<div class="buttonArea">
+<input type="submit" id="logout" data-role="button" data-bind="click: onLogout, visible: isLoggedIn" class="login-button" value="Logout" />
+</div>
+
+<form data-bind="events: { keyup: checkEnter }">
+<ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn">
+<li>
+<label> 
+Username
+<input type="text" data-bind="value: username" />
+</label>
+</li>
+<li>
+<label>
+Password
+<input type="password" data-bind="value: password" />
+</label>
+</li>
+</ul>
+
+<div class="buttonArea">
+<input type="submit" id="login" data-role="button" data-bind="click: onLogin, invisible: isLoggedIn" class="login-button" value="Login" />
+</div>
+</form>
+</div>
+
+</div>
+-->
+        <!--Location-->
+        <div id="tabstrip-location"
+             data-role="view"
+             data-title="Drop"
+             data-init="app.locationService.initLocation"
+             data-show="app.locationService.show"
+             data-hide="app.locationService.hide"
+             data-model="app.locationService.viewModel"
+             data-stretch="true">
+            
+            <div id="no-map" data-bind="invisible: isGoogleMapsInitialized">
+                Drop off locator requires internet connection to display the  map.
+            </div>
+            <div id="map-search-wrap" data-bind="visible: isGoogleMapsInitialized">
+                <button id="map-navigate-home" data-bind="click: onNavigateHome"></button>
+                <form onsubmit="return false;">
+                    <input id="map-address" type="search" data-bind="value: address" placeholder="Address" />
+                    <input id="map-search" type="submit" value="" data-bind="click: onSearchAddress" />
+                </form>
+            </div>
+            <div id="map-canvas" data-bind="visible: isGoogleMapsInitialized"></div> 
+            
+        </div>
+        
+        <!--Package Tracker-->
+        <div  id="tabstrip-tracker" data-role="view" data-title="Track" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
+            <header data-role="header"> 
+                <div data-role="navbar">
+                    <span data-role="view-title"></span>
+                    <a data-align="left" data-icon="add" data-role="button" data-rel="modalview" href="#modalview-add"></a>
+                  <!--  <a data-align="right" data-role="button" class="nav-button" href="#/">Index</a> -->
+                </div>
+            </header>
+            <ul id="pull-with-endless-listview"></ul>
+        </div>
+        
+        <div data-role="modalview" id="modalview-add" style="width: 95%; height: 12em;">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span>Add Tracking Number</span> 
+                    <a data-click="closeModalViewAdd" data-role="button" data-align="right">Cancel</a>
+                </div>
+            </div>
+            
+            <ul data-role="listview" data-style="inset">
                 <li>
-                    <label>
-                        <div>Username</div>
-                        <input type="text" data-bind="value: username" />
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <div>Password</div>
-                        <input type="password" data-bind="value: password" />
-                    </label>
-                </li>
+                    <label for="username">Packages:</label>
+                    <input type="text" id="name" /></li>
             </ul>
-            <input id="login" type="submit" data-role="button" data-bind="click: onLogin, invisible: isLoggedIn" value="Login" class="login-button" />
-        </form>
-    </div>
-
-    <!--Location View-->
-    <div id="tabstrip-location"
-        data-role="view"
-        data-title="Location"
-        data-init="app.locationService.initLocation"
-        data-show="app.locationService.show"
-        data-hide="app.locationService.hide"
-        data-model="app.locationService.viewModel"
-        data-stretch="true">
-
-        <div id="map-canvas" class="map" data-bind="visible: isGoogleMapsInitialized"></div>
-
-        <div id="no-map" data-bind="invisible: isGoogleMapsInitialized">
-            <h3>Location requires internet connection to display the map.</h3>
+            <a data-click="addNew" class="addNew" type="button" data-role="button">Add New Tracking Number</a>
         </div>
-        <div id="map-search-wrap" class="map-tools" data-bind="visible: isGoogleMapsInitialized">
-            <div>
-                <button id="map-navigate-home" class="map-tools-button home" data-bind="click: onNavigateHome"></button>
-                <input id="map-address" type="search" class="map-tools-input" data-bind="value: address" placeholder="Address" />
-                <button id="map-search" class="map-tools-button search" data-bind="click: onSearchAddress"></button>
+        
+        <div data-role="modalview" id="packageTrackingDetailsModalView" style="width: 95%; height: 12em;">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span>Status</span>
+                    <a data-click="packageTrackingDetailsModalView_Close" data-role="button" data-align="right">Close</a>
+                </div>
             </div>
+            
+            <ul data-role="listview" data-style="inset">
+                <li> 
+                    
+                    <ul id="trackingDetailsListView"  >  
+                    </ul>
+                    
+                </li> 
+            </ul>
         </div>
-    </div>
+        <script type="text/x-kendo-tmpl" id="trackingDetailsTemplate"> 
+        <p>#:description#</p> 
+         <p>#:timestamp#</p> 
+        </script> 
+        <!-- <a href="\#packageTrackingDetailsModalView?id=#:TrackingNumber#" class="km-listview-link" data-role="listview-link">#:TrackingNumber#</a> -->
+        <script type="text/x-kendo-tmpl" id="pull-with-endless-template">
 
-    <!--Weather View-->
-    <div id="tabstrip-weather"
-        data-role="view"
-        data-title="Weather"
-        data-model="app.weatherService.viewModel">
-
-        <ul data-role="listview" data-style="inset"
-            data-bind="source: weatherDataSource"
-            data-template="weather-forecast-template">
-        </ul>
-    </div>
-
-    <!--Weather forecast template-->
-    <script id="weather-forecast-template" type="text/x-kendo-tmpl">
-        <div class="w-item-template">
-            <span class="w-icon ${image}"></span>
-            <h4 class="w-date">${day}</h4>
-            <div class="w-temp">
-                <span>${highTemperature}<sup>&deg;</sup></span>
-                <span>${lowTemperature}<sup>&deg;</sup></span>
+    <div class="product-item">
+       <h3>
+       
+         <a   data-role="button" data-rel="modalview" data-trackinguid="#:TrackingUid#" data-click="viewPackgeTrackingDetails_Click" >#:TrackingNumber#</a>
+        </h3>
+        </div>
+    
+        </script> 
+        <script>
+            function mobileListViewPullWithEndless(e) {
+                var userUid = "1";
+                var dataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            type       : "GET",
+                            url        : "http://minlarkapi.aliasmedia.com/api/Tracking/GetTrackingNumberList?userUid=" + userUid +"",
+                            contentType: "application/json; charset=utf-8",
+                            dataType   : "json",
+                            error      : function (xhr, ajaxOptions, thrownError) {
+                                alert("error " + xhr.responseText);
+                            }
+                        },
+                        //  parameterMap: function(options) {
+                        // return {
+                        //     take: options.take,
+                        //     skip: options.skip,
+                        //     page: options.page,
+                        //     pageSize: options.pageSize
+                        // };
+                        // }
+                    }, 
+                    schema         : {
+                        total: function (data) {
+                            return data.Count;
+                        }, 
+                        data: function (data) {
+                            return data.TrackingList;
+                        } 
+                    },
+                    serverPaging: false, 
+                    pageSize: 20 
+                });
+                
+                $("#pull-with-endless-listview").kendoMobileListView({
+                    dataSource: dataSource,
+                    template: $("#pull-with-endless-template").text(),
+                    pullToRefresh: true,
+                    endlessScroll: true
+                });
+                
+                
+                
+                $("#addNew").click(function () {
+                    loader.show();
+                    addProductDataSource.add({
+                        TrackingNumber: $("#name").val()
+                        //ProductName: $("#name").val(),
+                        //UnitPrice: Math.floor((Math.random() * 10) + 1)
+                    });
+                });
+            }
+            
+            function viewPackgeTrackingDetails_Click(e) {
+                var data = e.button.data();
+                // $("#hfTrackingNumber").val(data.trackinguid); 
+                
+                // $("#lblPackageStatus").val(data.trackinguid);
+                
+                var trackingDetailsDataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            type       : "GET",
+                            url        : "http://minlarkapi.aliasmedia.com/api/Tracking/TrackPackage?TrackingUid=" + data.trackinguid + "",
+                            contentType: "application/json; charset=utf-8",
+                            dataType   : "json",
+                            error      : function (xhr, ajaxOptions, thrownError) {
+                                alert("error " + xhr.responseText);
+                            }
+                        },
+                        // parameterMap: function(options) {
+                        //  return {
+                        //     TrackUid: 1
+                        //  };
+                        //  }
+                    },  
+                    schema         : {
+                        total: function (data) {
+                            return data.Count;
+                        },  
+                        data: function (data) {
+                            return data.Data;
+                        },
+                        model: {
+                            fields: {
+                                timestamp : {
+                                    type: "date",
+                                    parse: function(value) {
+                                        return new Date(value * 1000);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                $("#trackingDetailsListView").kendoMobileListView({
+                    dataSource: trackingDetailsDataSource,
+                    template: $("#trackingDetailsTemplate").text(),
+                    
+                    
+                });
+                
+                $("#packageTrackingDetailsModalView").kendoMobileModalView("open");
+            }
+            
+            function packageTrackingDetailsModalView_Close() {
+                $("#packageTrackingDetailsModalView").kendoMobileModalView("close");
+            }
+            
+            function closeModalViewAdd() {
+                $("#modalview-add").kendoMobileModalView("close");
+            }
+            
+            function addNew() {
+                addProductDataSource.add({
+                    TrackingUid: 0,
+                    TrackingNumber: $("#name").val(),
+                    CarrierName: "USPS",
+                    UserUid: 1
+                    //UnitPrice: Math.floor((Math.random() * 10) + 1)
+                });
+                
+                closeModalViewAdd();
+            } 
+            
+            var addProductDataSource = new kendo.data.DataSource({
+                transport: {
+                    create: {
+                        url: "http://minlarkapi.aliasmedia.com/api/Tracking/SaveTrackingID",
+                        contentType: "application/json; charset=utf-8",
+                        dataType   : "json",
+                    }, 
+                    parameterMap: function (options, operation) {
+                        if (operation !== "read" && options.models) {
+                            return { models: kendo.stringify(options.models) };
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "ID",
+                        fields: {
+                            TrackingUid: { type: "int"},
+                            CarrierName: { type: "string" },
+                            TrackingNumber: { type: "string" },
+                            UserUid: { type: "int" }
+                        }
+                    }
+                },
+                autoSync: true,
+                batch: true,
+                requestEnd: function () {
+                    $("#name").val("");
+                }
+            });
+        </script>
+        <!--Package Tracker template
+<script type="text/x-kendo-tmpl" id="tracker-template">
+<div>
+<div class="position-left">
+<span class="weather-info date">#=TrackingNumber#</span>
+</div>
+<div class="position-right">
+<span class="weather-info temperature high">#=TrackingNumber#<sup>&deg;</sup></span>
+<span class="weather-info temperature low">#=TrackingNumber#<sup>&deg;</sup></span>
+</div>
+<div class="position-center">
+<span class="weather-icon"></span>
+</div>
+</div> 
+</script>-->
+        
+        <!--Layout-->
+        <div data-role="layout" data-id="tabstrip-layout">
+            
+            <!--Header-->
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span data-role="view-title"></span>
+                </div>
             </div>
-        </div>
-    </script>
+            
+            <!--Footer-->
+            <div data-role="footer">
+                <div data-role="tabstrip">
+                    <a href="#tabstrip-rates">Rates</a>
+                  <!--  <a href="#tabstrip-rates" data-icon="home">Rates</a>-->
+                    <!--    <a href="#tabstrip-login" data-icon="contacts">Login</a> -->
+                                        <a href="#tabstrip-location">Drop Off</a>
 
-    <!--Layout-->
-    <div data-role="layout" data-id="tabstrip-layout">
-        <!--Header-->
-        <div data-role="header">
-            <div data-role="navbar">
-                <span data-role="view-title"></span>
+                    <!--
+                    <a href="#tabstrip-location" data-icon="search">Drop Off Locations</a>-->
+                     <a href="#tabstrip-tracker">Tracker</a>
+                  <!--  <a href="#tabstrip-tracker" data-icon="globe">Tracker</a> -->
+                </div>
             </div>
-        </div>
+        </div> 
+        <!--<script>
+            
+            $(function () {
+                
+                $("#artistsListView").kendoMobileListView({
+                    endlessScroll: true,
+                    dataSource: data.artists,
+                    template: $("#artists-list-template").text(),
+                    scrollThreshold: 10
+                });
+                
+                
+            });
+            
+        </script>
+        <script id="artists-list-template" type="text/x-kendo-tmpl">
+            <span style="display: inline-block;white-space: nowrap;">#=FirstName#</span>
+        </script> -->
+        
+          <script id="rate-list-template" type="text/x-kendo-tmpl">
+                      <span style="display: inline-block;white-space: nowrap;">Carrier: #:Carrier #</span>
+                      <br />
+            <span style="display: inline-block;white-space: nowrap;">Amount: #:Charge #</span>
+<br />
+            <span style="display: inline-block;white-space: nowrap;">Service: #:Service #</span>
+            <br />
+                        <span style="display: inline-block;white-space: nowrap;">Delivered: #:TransitTime #</span>
 
-        <!--Footer-->
-        <div data-role="footer">
-            <div data-role="tabstrip">
-                <a href="#/" data-icon="home">Home</a>
-                <a href="#tabstrip-login" data-icon="contacts">Login</a>
-                <a href="#tabstrip-location" data-icon="search">Location</a>
-                <a href="#tabstrip-weather" data-icon="globe">Weather</a>
-            </div>
-        </div>
-    </div>
-</body>
+        </script>
+        
+        
+    </body>
 </html>
