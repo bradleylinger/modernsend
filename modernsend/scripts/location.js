@@ -14,24 +14,26 @@
 
         onNavigateHome: function () {
             var that = this,
-                position;
+                pin;
 
             that._isLoading = true;
             that.toggleLoading();
 
             navigator.geolocation.getCurrentPosition(
                 function (position) {
-                    position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    map.panTo(position);
-                    that._putMarker(position);
-
+                    pin = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    map.panTo(pin);
+                    that._putMarker(pin);
+					
+                     $("#map-address").val(position.coords.latitude + "," + position.coords.longitude);
                     that._isLoading = false;
                     that.toggleLoading();
                 },
                 function (error) {
                     //default map coordinates
-                    position = new google.maps.LatLng(43.459336, -80.462494);
-                    map.panTo(position);
+                    pin = new google.maps.LatLng(43.459336, -80.462494);
+                    map.panTo(pin);
+                     $("#map-address").val("43.459336" + "," + "-80.462494");
 
                     that._isLoading = false;
                     that.toggleLoading();
@@ -65,6 +67,9 @@
 
                     map.panTo(results[0].geometry.location);
                     that._putMarker(results[0].geometry.location);
+                    
+                     //$("#map-address").val(results[0].geometry.location.k + "," + results[0].geometry.location.B);
+
                 });
         },
 
@@ -80,7 +85,10 @@
             var that = this;
 
             if (that._lastMarker !== null && that._lastMarker !== undefined) {
-                that._lastMarker.setMap(null);
+                if(that._lastMarker.setMap != null)
+                {
+                	that._lastMarker.setMap(null);
+                }
             }
 
             that._lastMarker = new google.maps.Marker({
@@ -93,12 +101,26 @@
         },
         toggleProvider: function(index) {
             var that = this;
+
+            that._isLoading = true;
+            that.toggleLoading();
+            
+            var provider = "";
+            if($("#map-address").val() == "")
+                return;
+            if(index == 0)
+                provider = "FedEx";
+            else if(index == 1)
+                provider = "UPS";
+            else
+                provider = "USPS";
+            
             var  dataSource = new kendo.data.DataSource({
                 serverFiltering: true,
                 transport      : {
                     read: {
                         type       : "GET",
-                        url        : "http://minlarkapi.aliasmedia.com/api/Dropoff/GetFedExLocations?fromZip=68130",
+                        url        : "http://minlarkapi.aliasmedia.com/api/Dropoff/Get" + provider + "Locations?address=" + $("#map-address").val(),
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
                         error      : function (xhr, ajaxOptions, thrownError) {
@@ -112,34 +134,24 @@
                 }
                 },
                      requestEnd: function (e) {
-                
-                          that._lastMarker.setMap(null);
+                        
+                         app.locationService.viewModel.initializeNewMap();
+
                          var locationValues = $.parseJSON(e.response.Data);
-                        $.each(locationValues, function() {
-                            //alert(this.Street);
-                             position = new google.maps.LatLng(this.Latitude, this.Longitude);
-                            map.panTo(position);
-                
-                           
-                
+
+                        $.each(locationValues.Locations, function() {
+                         	position = new google.maps.LatLng(this.Latitude, this.Longitude);
                             that._lastMarker = new google.maps.Marker({
                                 map: map,
+                              url: 'maps://?q=dallas',
+
                                 position: position
                             });
-                            
-                            
-                            //that._putMarker(position);
-                            //locations.push({
-                            //	title: dataSource.Data[i].title + ", " + dataSource.Data[i].description,
-                            //	position: new google.maps.LatLng(dataSource.Data[i].latitude, dataSource.Data[i].longitude),
-                              //  icon: pinImage,
-                                //animation: google.maps.Animation.DROP
-                            //});
                         });
                          
-                      
-                         
-                         
+                       position = new google.maps.LatLng(locationValues.ValidatedSearchAddress.Latitude, locationValues.ValidatedSearchAddress.Longitude);
+                        map.panTo(position);
+						$("#map-address").val(locationValues.ValidatedSearchAddress.FormattedAddress)
             },
                 type           : "json",
                 parameterMap   : function (options) {
@@ -149,33 +161,24 @@
             
             dataSource.read();
             
-
-
-         
-
-           // that._isLoading = false;
-           //that.toggleLoading();
-		}
-    });
-    
-    _private = {
-    	
-    };
-    
-   
-
-    app.locationService = {
-        initLocation: function () {
+            that._isLoading = false;
+           that.toggleLoading();
+		},
+        initializeNewMap: function() {
             var mapOptions;
 
             if (typeof google === "undefined") {
                 return;
             }
+            
+            var zoom = 15;
+            if(map != undefined)
+                zoom = map.zoom;
 
             app.locationService.viewModel.set("isGoogleMapsInitialized", true);
 
             mapOptions = {
-                zoom: 15,
+                zoom: zoom,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControl: true,
                 zoomControlOptions: {
@@ -188,6 +191,20 @@
 
             map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
             geocoder = new google.maps.Geocoder();
+        }
+    });
+    
+    _private = {
+    	
+    };
+    
+   
+
+    app.locationService = {
+        initLocation: function () {
+            
+            app.locationService.viewModel.initializeNewMap();
+            
             app.locationService.viewModel.onNavigateHome.apply(app.locationService.viewModel, []);
             
             

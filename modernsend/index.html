@@ -11,14 +11,11 @@
     <script src="kendo/js/kendo.mobile.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
-            <script src="scripts/data.js"></script>
-            <script src="scripts/getRate.js"></script>
-
+    <script src="scripts/data.js"></script>
+    <script src="scripts/getRate.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/location.js"></script>
-            <script src="scripts/tracker.js"></script>
-
-
+    <script src="scripts/tracker.js"></script>
 </head>
  <body>
         <!--Home-->
@@ -130,6 +127,8 @@ Password
               <header data-role="header">
                 <div data-role="navbar">
                     <div class="map-tools" data-bind="visible: isGoogleMapsInitialized">
+                        <!--<a href="maps://?q=dallas" data-rel="external">iOS launch in apple maps</a>-->
+
                         <button id="map-navigate-home" class="home map-tools-button" data-bind="click: onNavigateHome"></button>
                         <form onsubmit="return false;">
                             <input id="map-address" type="search" data-bind="value: address" placeholder="Address" />
