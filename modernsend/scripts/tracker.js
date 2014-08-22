@@ -17,7 +17,7 @@
                 transport      : {
                     read: {
                         type       : "GET",
-                        url        : "http://centralapi.aliasmedia.com:82/api/Tracking/GetTrackingNumberList?userUid=" + userUid +"",
+                        url        : "http://minlarkapi.aliasmedia.com/api/Tracking/GetTrackingNumberList?userUid=" + userUid +"",
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
                         error      : function (xhr, ajaxOptions, thrownError) {

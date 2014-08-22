@@ -15,9 +15,7 @@
             <script src="scripts/getRate.js"></script>
 
     <script src="scripts/app.js"></script>
-    <script src="scripts/login.js"></script>
     <script src="scripts/location.js"></script>
-    <script src="scripts/weather.js"></script>
             <script src="scripts/tracker.js"></script>
 
 
@@ -117,6 +115,7 @@ Password
 -->
         <!--Location-->
         <div id="tabstrip-location"
+             class="map"
              data-role="view"
              data-title="Drop"
              data-init="app.locationService.initLocation"
@@ -128,13 +127,30 @@ Password
             <div id="no-map" data-bind="invisible: isGoogleMapsInitialized">
                 Drop off locator requires internet connection to display the  map.
             </div>
-            <div id="map-search-wrap" data-bind="visible: isGoogleMapsInitialized">
-                <button id="map-navigate-home" data-bind="click: onNavigateHome"></button>
-                <form onsubmit="return false;">
-                    <input id="map-address" type="search" data-bind="value: address" placeholder="Address" />
-                    <input id="map-search" type="submit" value="" data-bind="click: onSearchAddress" />
-                </form>
-            </div>
+              <header data-role="header">
+                <div data-role="navbar">
+                    <div class="map-tools" data-bind="visible: isGoogleMapsInitialized">
+                        <button id="map-navigate-home" class="home map-tools-button" data-bind="click: onNavigateHome"></button>
+                        <form onsubmit="return false;">
+                            <input id="map-address" type="search" data-bind="value: address" placeholder="Address" />
+                            <button id="map-search" class="search map-tools-button"  data-bind="click: onSearchAddress">
+                                
+                            </button>
+                        </form>
+                         
+                    </div>
+                    
+                </div>
+                   <ul id="btnProviderToggle" data-role="buttongroup" data-align="center" data-bind="click: onProviderClick">
+                            <li>FedEx</li>
+                            <li>UPS</li>
+                             <li>USPS</li>
+                        </ul>
+            </header>
+                
+          
+           
+              
             <div id="map-canvas" data-bind="visible: isGoogleMapsInitialized"></div> 
             
         </div>

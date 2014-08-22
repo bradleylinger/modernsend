@@ -5,9 +5,10 @@
         app = global.app = global.app || {};
 
     LocationViewModel = kendo.data.ObservableObject.extend({
+              
+
         _lastMarker: null,
         _isLoading: false,
-
         address: "",
         isGoogleMapsInitialized: false,
 
@@ -44,6 +45,8 @@
                 }
             );
         },
+        
+        
 
         onSearchAddress: function () {
             var that = this;
@@ -84,8 +87,82 @@
                 map: map,
                 position: position
             });
-        }
+            
+            
+            
+        },
+        toggleProvider: function(index) {
+            var that = this;
+            var  dataSource = new kendo.data.DataSource({
+                serverFiltering: true,
+                transport      : {
+                    read: {
+                        type       : "GET",
+                        url        : "http://minlarkapi.aliasmedia.com/api/Dropoff/GetFedExLocations?fromZip=68130",
+                        contentType: "application/json; charset=utf-8",
+                        dataType   : "json",
+                        error      : function (xhr, ajaxOptions, thrownError) {
+                            alert("error " + xhr.responseText);
+                        }
+                    }
+                },
+                schema         : {
+                    data: function (data) {
+                    return data.Data;
+                }
+                },
+                     requestEnd: function (e) {
+                
+                          that._lastMarker.setMap(null);
+                         var locationValues = $.parseJSON(e.response.Data);
+                        $.each(locationValues, function() {
+                            //alert(this.Street);
+                             position = new google.maps.LatLng(this.Latitude, this.Longitude);
+                            map.panTo(position);
+                
+                           
+                
+                            that._lastMarker = new google.maps.Marker({
+                                map: map,
+                                position: position
+                            });
+                            
+                            
+                            //that._putMarker(position);
+                            //locations.push({
+                            //	title: dataSource.Data[i].title + ", " + dataSource.Data[i].description,
+                            //	position: new google.maps.LatLng(dataSource.Data[i].latitude, dataSource.Data[i].longitude),
+                              //  icon: pinImage,
+                                //animation: google.maps.Animation.DROP
+                            //});
+                        });
+                         
+                      
+                         
+                         
+            },
+                type           : "json",
+                parameterMap   : function (options) {
+                    return JSON.stringify(options);
+                }
+            });
+            
+            dataSource.read();
+            
+
+
+         
+
+           // that._isLoading = false;
+           //that.toggleLoading();
+		}
     });
+    
+    _private = {
+    	
+    };
+    
+   
 
     app.locationService = {
         initLocation: function () {
@@ -112,6 +189,15 @@
             map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
             geocoder = new google.maps.Geocoder();
             app.locationService.viewModel.onNavigateHome.apply(app.locationService.viewModel, []);
+            
+            
+			
+
+			$("#btnProviderToggle").data("kendoMobileButtonGroup")
+			.bind("select", function(e) {
+				app.locationService.viewModel.toggleProvider(e.sender.selectedIndex);
+			});
+		
         },
 
         show: function () {
@@ -127,6 +213,8 @@
             //hide loading mask if user changed the tab as it is only relevant to location tab
             kendo.mobile.application.hideLoading();
         },
+        
+        	
 
         viewModel: new LocationViewModel()
     };

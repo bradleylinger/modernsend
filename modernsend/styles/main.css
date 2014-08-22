@@ -32,9 +32,8 @@
     height: 100%;
 }
 .map-tools {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
+    
     z-index: 10;
     background-color: rgba(255, 255, 255, 0.85);
     box-sizing: border-box;
@@ -92,6 +91,7 @@
 .km-wp .map-tools input[type=search].map-tools-input {
     width: 50%;
 }
+
 
 /* WEATHER VIEW STYLES */
 .w-icon {
