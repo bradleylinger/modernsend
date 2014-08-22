@@ -3,11 +3,11 @@
   "IsRunnable": "true",
   "ProjectGuid": "d78d6ddf-9693-4066-a2dc-5084cddc83c9",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.modernsend",
+  "AppIdentifier": "com.aliasmedia.modernsend",
   "DisplayName": "modernsend",
   "Author": "",
   "Description": "modernsend",
-  "BundleVersion": "1.0",
+  "BundleVersion": "1.1",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
