@@ -39,7 +39,7 @@
                 transport      : {
                     read: {
                         type       : "GET",
-                        url        : "http://minlarkapi.aliasmedia.com/api/Rate/GetRate?To=" + $("#to").val() +"&From=" + $("#from").val() +"&Weight=" + $("#txtWeight").val(),
+                        url        : "http://minlarkapi.aliasmedia.com/api/Rate/GetRate?To=" + $("#to").val() +"&From=" + $("#from").val() + "&Weight=" + $("#txtWeight").val() + "&Length=" + $("#txtLength").val() + "&Height=" + $("#txtHeight").val() + "&Width=" + $("#txtWidth").val(),
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
                         error      : function (xhr, ajaxOptions, thrownError) {

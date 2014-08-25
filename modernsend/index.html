@@ -23,24 +23,26 @@
              data-role="view"
              data-title="Rates"
              data-model="app.getrateService.viewModel">
-            <div class="view-content"> 
+       
+    
+            
                 <!--<ul id="artistsListView" data-role="listview" data-style="inset"></ul>-->
         <form id="rateForm">
                 
-                <ul style="list-style-type:none;">
+                <ul data-role="listview" data-style="inset">
                     <li>
                         <label for="from" class="required">From</label>
-                        <input type="number" id="from" placeholder="Zip Code" required validationMessage="<br />Enter Valid Zip Code" />
+                        <input type="number" id="from" placeholder="Zip Code (required)" required validationMessage="*" />
                     </li> 
                     <li>
                         	<label for="to" class="required">To</label>
-							<input type="number" id="to" placeholder="Zip Code" required validationMessage="<br />Enter Valid Postal Code" />
+							<input type="number" id="to" placeholder="Zip Code (required)" required validationMessage="*" />
                     </li>
                      <li>
                         <label for="txtWidth">
                             Weight
                         </label>
-						<input type="number" id="txtWeight" placeholder="in pounds" required validationMessage="<br />Enter Valid Weight" />
+						<input type="number" id="txtWeight" placeholder="in pounds (required)" required validationMessage="*" />
                     </li>
                      <li>
                         <label for="txtLength">
@@ -60,8 +62,7 @@
                         </label>
                           <input type="number" id="txtWidth" placeholder="in inches" />
                     </li>
-                     <li class="status">
-                    </li>
+                    
                 </ul>
                 <div class="buttonArea">
                     <input type="submit" id="btnGetRate" data-role="button" data-bind="click: onGetRate" value="Get Rate" />
@@ -69,7 +70,6 @@
                 </form>
                 <ul id="rateListView" data-role="listview"  data-style="inset"></ul>
             </div>
-        </div>
         
         <!--Login
 <div id="tabstrip-login"
@@ -163,8 +163,11 @@ Password
                   <!--  <a data-align="right" data-role="button" class="nav-button" href="#/">Index</a> -->
                 </div>
             </header>
-            <ul id="pull-with-endless-listview"></ul>
+        
+            <ul id="pull-with-endless-listview" ></ul>
         </div>
+     
+    
         
         <div data-role="modalview" id="modalview-add" style="width: 95%; height: 12em;">
             <div data-role="header">
@@ -200,22 +203,57 @@ Password
             </ul>
         </div>
         <script type="text/x-kendo-tmpl" id="trackingDetailsTemplate"> 
-        <p>#:description#</p> 
-         <p>#:timestamp#</p> 
+       <p>Status: #:Status#</p> 
+       <p>Details: #:Description#</p> 
+         <p>#:Time#</p> 
         </script> 
         <!-- <a href="\#packageTrackingDetailsModalView?id=#:TrackingNumber#" class="km-listview-link" data-role="listview-link">#:TrackingNumber#</a> -->
+     
+         
+     
         <script type="text/x-kendo-tmpl" id="pull-with-endless-template">
 
     <div class="product-item">
-       <h3>
+     
        
-         <a   data-role="button" data-rel="modalview" data-trackinguid="#:TrackingUid#" data-click="viewPackgeTrackingDetails_Click" >#:TrackingNumber#</a>
-        </h3>
+         <a   class="trackingDetailsButton" data-rel="modalview" data-trackinguid="#:TrackingUid#" data-click="viewPackgeTrackingDetails_Click" >#:TrackingNumber#</a>
+                <a href="\\#" data-role="button" data-task="delete" class="delete" data-trackinguid="#:TrackingUid#" data-click="deletePackgeTrackingDetails_Click" >Delete</a>
+
         </div>
     
         </script> 
         <script>
-            function mobileListViewPullWithEndless(e) {
+              function swipe(e) {
+                var button = kendo.fx($(e.touch.currentTarget).find("[data-task=delete]"));
+                button.expand().duration(200).play();
+            }
+            
+            function touchstart(e) {
+                var target = $(e.touch.initialTouch),
+                    listview = $("#pull-with-endless-listview").data("kendoMobileListView"),
+                    model,
+                    button = $(e.touch.target).find("[data-task=delete]:visible");
+        
+                if (target.closest("[data-task=delete]")[0]) {
+                    //model = dataSource.getByUid($(e.touch.target).attr("data-uid"));
+                    //dataSource.remove(model);
+        
+                    //prevent `swipe`
+                    this.events.cancel();
+                    e.event.stopPropagation();
+                } else if (button[0]) {
+                    //button.fadeOut();
+
+                    button.hide();
+        
+                    //prevent `swipe`
+                    this.events.cancel();
+                } else {
+                    listview.items().find("[data-task=delete]:visible").hide();
+                }
+            }
+            
+            function mobileListViewPullWithEndless() {
                 var userUid = "1";
                 var dataSource = new kendo.data.DataSource({
                     transport: {
@@ -245,8 +283,9 @@ Password
                             return data.TrackingList;
                         } 
                     },
+                    
                     serverPaging: false, 
-                    pageSize: 20 
+                    pageSize: 1000 
                 });
                 
                 $("#pull-with-endless-listview").kendoMobileListView({
@@ -254,6 +293,13 @@ Password
                     template: $("#pull-with-endless-template").text(),
                     pullToRefresh: true,
                     endlessScroll: true
+                })
+                .kendoTouch({
+                    filter: ">li",
+                    enableSwipe: true,
+                     touchstart: touchstart,
+                    //tap: navigate,
+                    swipe: swipe
                 });
                 
                 
@@ -266,6 +312,53 @@ Password
                         //UnitPrice: Math.floor((Math.random() * 10) + 1)
                     });
                 });
+            }
+            
+             function deletePackgeTrackingDetails_Click(e) {
+                var data = e.button.data();
+                // $("#hfTrackingNumber").val(data.trackinguid); 
+                
+                // $("#lblPackageStatus").val(data.trackinguid);
+                
+                var deleteCommand = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            type       : "GET",
+                            url        : "http://minlarkapi.aliasmedia.com/api/Tracking/DeletePackageTracking?UserUid=1&TrackingUid=" + data.trackinguid + "",
+                            contentType: "application/json; charset=utf-8",
+                            dataType   : "json",
+                            error      : function (xhr, ajaxOptions, thrownError) {
+                                alert("error " + xhr.responseText);
+                            }
+                        },
+                        // parameterMap: function(options) {
+                        //  return {
+                        //     TrackUid: 1
+                        //  };
+                        //  }
+                    },  
+                    schema         : {
+                        total: function (data) {
+                            return data.Count;
+                        },  
+                        data: function (data) {
+                            return data.Data;
+                        }
+                        //  model: {
+                            // fields: {
+                                //    timestamp : {
+                                    //        type: "date",
+                                    //         parse: function(value) {
+                                        //              return new Date(value * 1000);
+                                        //           }
+                                    //       }
+                                //    }
+                            //}
+                    }
+                });
+                 
+                 deleteCommand.read();
+               
             }
             
             function viewPackgeTrackingDetails_Click(e) {
@@ -297,17 +390,17 @@ Password
                         },  
                         data: function (data) {
                             return data.Data;
-                        },
-                        model: {
-                            fields: {
-                                timestamp : {
-                                    type: "date",
-                                    parse: function(value) {
-                                        return new Date(value * 1000);
-                                    }
-                                }
-                            }
                         }
+                        //  model: {
+                            // fields: {
+                                //    timestamp : {
+                                    //        type: "date",
+                                    //         parse: function(value) {
+                                        //              return new Date(value * 1000);
+                                        //           }
+                                    //       }
+                                //    }
+                            //}
                     }
                 });
                 
@@ -320,6 +413,8 @@ Password
                 
                 $("#packageTrackingDetailsModalView").kendoMobileModalView("open");
             }
+            
+           
             
             function packageTrackingDetailsModalView_Close() {
                 $("#packageTrackingDetailsModalView").kendoMobileModalView("close");
@@ -401,14 +496,14 @@ Password
             <!--Footer-->
             <div data-role="footer">
                 <div data-role="tabstrip">
-                    <a href="#tabstrip-rates">Rates</a>
+                    <a href="#tabstrip-rates" class="rates" >Rate</a>
                   <!--  <a href="#tabstrip-rates" data-icon="home">Rates</a>-->
                     <!--    <a href="#tabstrip-login" data-icon="contacts">Login</a> -->
-                                        <a href="#tabstrip-location">Drop Off</a>
+                                        <a href="#tabstrip-location" >Find</a>
 
                     <!--
                     <a href="#tabstrip-location" data-icon="search">Drop Off Locations</a>-->
-                     <a href="#tabstrip-tracker">Tracker</a>
+                     <a href="#tabstrip-tracker">Track</a>
                   <!--  <a href="#tabstrip-tracker" data-icon="globe">Tracker</a> -->
                 </div>
             </div>

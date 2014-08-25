@@ -126,6 +126,33 @@
     opacity: 0.5;
 }
 
+/*-- Custom Styles --*/
+.k-invalid-msg
+{
+color:red;
+    font-weight:bold;
+}
+#btnGetRate
+{
+display:block;
+    margin:0 auto;
+}
+.trackingDetailsButton
+{
+
+    border:none !important;
+    color:black !important;
+}
+
+ #pull-with-endless-listview .delete {
+        display:none;
+        position: absolute;
+        top: .15em;
+        right: .5em;
+        width: 60px;
+        background-color: #bd2729;
+        color: #fff;
+    }
 /* RETINA DISPLAY STYLES */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
     .welcome-image {

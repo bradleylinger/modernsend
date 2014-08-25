@@ -24,8 +24,43 @@
                     pin = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     map.panTo(pin);
                     that._putMarker(pin);
-					
-                     $("#map-address").val(position.coords.latitude + "," + position.coords.longitude);
+                    
+                      $("#map-address").val(position.coords.latitude + "," + position.coords.longitude);
+
+                    
+                    //This query takes the coordinates and turns them into a readable address
+                     var  dataSource = new kendo.data.DataSource({
+                        serverFiltering: true,
+                        transport      : {
+                            read: {
+                                type       : "GET",
+                                url        : "http://minlarkapi.aliasmedia.com/api/Dropoff/GetValidatedAddress?Address=" + position.coords.latitude + "," + position.coords.longitude,
+                                contentType: "application/json; charset=utf-8",
+                                dataType   : "json",
+                                error      : function (xhr, ajaxOptions, thrownError) {
+                                    alert("error " + xhr.responseText);
+                                }
+                            }
+                        },
+                        schema         : {
+                            data: function (data) {
+                            return data.Data;
+                        	}
+                        },
+                         requestEnd: function (e) {
+                            var address = $.parseJSON(e.response.Data);
+                            
+                            if(address.FormattedAddress != "")
+                            $("#map-address").val(address.FormattedAddress);
+                    	},
+                        type           : "json",
+                        parameterMap   : function (options) {
+                            return JSON.stringify(options);
+                        }
+                    });
+                    //Calling .read() forces the synchronous query to execute.
+                     dataSource.read();
+                    
                     that._isLoading = false;
                     that.toggleLoading();
                 },
