@@ -132,8 +132,9 @@
 color:red;
     font-weight:bold;
 }
-#btnGetRate
+#btnGetRate, #btnSaveTrackingNumber
 {
+    text-align:center;
 display:block;
     margin:0 auto;
 }
