@@ -3,8 +3,11 @@
         app = global.app = global.app || {};
 
     	GetRateViewModel = kendo.data.ObservableObject.extend({
-        
-        onGetRate:  function () {
+            
+  
+        	onGetRate:  function () {
+                    
+
           var validator = $('input', "#rateForm").kendoValidator().data("kendoValidator"),
                     status = $(".status");
             
@@ -18,20 +21,6 @@
                                 .addClass("invalid");
                             return;
                         }
-            
-         
-            
-            //var fromtextBox = $("#from");
-            
-            // get the value of the numerictextbox.
-            //var fromValue = fromtextBox.val();
-                
-           // var toTextBox = $("#to");
-            
-            // get the value of the numerictextbox.
-           // var toValue = toTextBox.val();
-        // fromtextBox.val(fromtextBox.val() + "1234");
-            
            
 
             var rates = new kendo.data.DataSource({
@@ -39,7 +28,7 @@
                 transport      : {
                     read: {
                         type       : "GET",
-                        url        : "http://minlarkapi.aliasmedia.com/api/Rate/GetRate?To=" + $("#to").val() +"&From=" + $("#from").val() + "&Weight=" + $("#txtWeight").val() + "&Length=" + $("#txtLength").val() + "&Height=" + $("#txtHeight").val() + "&Width=" + $("#txtWidth").val(),
+                        url        : "http://minlarkapi.aliasmedia.com/api/Rate/GetRates?To=" + $("#to").val() +"&From=" + $("#from").val() + "&Weight=" + $("#txtWeight").val() + "&Length=" + $("#txtLength").val() + "&Height=" + $("#txtHeight").val() + "&Width=" + $("#txtWidth").val(),
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
                         error      : function (xhr, ajaxOptions, thrownError) {
@@ -70,12 +59,12 @@
             });
 
 
-        },
+        }
         
         
 
     });
-
+ 
     app.getrateService = {
         viewModel: new GetRateViewModel()
     };

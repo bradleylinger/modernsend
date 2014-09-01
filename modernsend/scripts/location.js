@@ -136,19 +136,26 @@
         },
         toggleProvider: function(index) {
             var that = this;
-
-            that._isLoading = true;
+			this._isLoading = true;
             that.toggleLoading();
             
             var provider = "";
             if($("#map-address").val() == "")
+            {
+                this._isLoading = false;
+
+                that.toggleLoading();
                 return;
+            }
+                
             if(index == 0)
                 provider = "FedEx";
             else if(index == 1)
                 provider = "UPS";
-            else
+            else if(index == 2)
                 provider = "USPS";
+            else
+               provider= "All";
             
             var  dataSource = new kendo.data.DataSource({
                 serverFiltering: true,
@@ -169,24 +176,41 @@
                 }
                 },
                      requestEnd: function (e) {
-                        
+
                          app.locationService.viewModel.initializeNewMap();
 
                          var locationValues = $.parseJSON(e.response.Data);
 
                         $.each(locationValues.Locations, function() {
                          	position = new google.maps.LatLng(this.Latitude, this.Longitude);
-                            that._lastMarker = new google.maps.Marker({
+                           var newMarker = new google.maps.Marker({
                                 map: map,
                               url: 'maps://?q=dallas',
+                                clickable: true,
 
-                                position: position
+                                position: position,
+                                          animation: google.maps.Animation.DROP,
+                                title:"asdf"
+
                             });
+                            
+                                 var streetAddress =  encodeURIComponent(this.Street + "," + this.City + "," + this.State + "," + this.PostalCode);
+                             var infowindow = new google.maps.InfoWindow({
+                                  content: "<h3>" + this.Carrier + "</h3><a href='maps://?q=" + streetAddress  + "'>Get Directions</a>"
+                              });
+
+                              google.maps.event.addListener(newMarker, 'click', function() {
+                                infowindow.open(map,newMarker);
+                              });
+
                         });
                          
                        position = new google.maps.LatLng(locationValues.ValidatedSearchAddress.Latitude, locationValues.ValidatedSearchAddress.Longitude);
                         map.panTo(position);
-						$("#map-address").val(locationValues.ValidatedSearchAddress.FormattedAddress)
+						$("#map-address").val(locationValues.ValidatedSearchAddress.FormattedAddress);
+                                        kendo.mobile.application.hideLoading();
+
+
             },
                 type           : "json",
                 parameterMap   : function (options) {
@@ -196,9 +220,17 @@
             
             dataSource.read();
             
-            that._isLoading = false;
-           that.toggleLoading();
 		},
+        markerClick: function(marker) {
+            if (marker.getAnimation() != null) {
+                alert("asdf");
+                marker.setAnimation(null);
+              } else {
+                                  alert("qwer");
+
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+              }
+        },
         initializeNewMap: function() {
             var mapOptions;
 

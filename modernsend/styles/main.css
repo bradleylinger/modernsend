@@ -132,11 +132,12 @@
 color:red;
     font-weight:bold;
 }
-#btnGetRate, #btnSaveTrackingNumber
+#btnGetRate, #btnSaveTrackingNumber, #btnGoToFindTab
 {
     text-align:center;
 display:block;
     margin:0 auto;
+    width:65%;
 }
 .trackingDetailsButton
 {

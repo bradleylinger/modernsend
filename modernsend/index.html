@@ -48,19 +48,19 @@
                     <label for="txtLength">
                         Length
                     </label>
-                    <input type="number" id="txtLength" placeholder="in inches" />
+                    <input type="number" id="txtLength" placeholder="in inches" required validationmessage="*" />
                 </li>
                 <li>
                     <label for="txtHeight">
                         Height
                     </label>
-                    <input type="number" id="txtHeight" placeholder="in inches" />
+                    <input type="number" id="txtHeight" placeholder="in inches" required validationmessage="*" />
                 </li>
                 <li>
                     <label for="txtWeight">
                         Width
                     </label>
-                    <input type="number" id="txtWidth" placeholder="in inches" />
+                    <input type="number" id="txtWidth" placeholder="in inches" required validationmessage="*" />
                 </li>
 
             </ul>
@@ -69,6 +69,8 @@
             </div>
         </form>
         <ul id="rateListView" data-role="listview" data-style="inset"></ul>
+                  
+
     </div>
 
     <!--Login
@@ -142,6 +144,8 @@
                 <li>FedEx</li>
                 <li>UPS</li>
                 <li>USPS</li>
+                <li>All</li>
+
             </ul>
         </header>
 
@@ -583,11 +587,13 @@
     <script id="rate-list-template" type="text/x-kendo-tmpl">
         <span style="display: inline-block;white-space: nowrap;">Carrier: #:Carrier #</span>
         <br />
-        <span style="display: inline-block;white-space: nowrap;">Amount: #:Charge #</span>
-        <br />
+        <span style="display: inline-block;white-space: nowrap;">Amount: $#:Charge #</span>
+        <br /> 
         <span style="display: inline-block;white-space: nowrap;">Service: #:Service #</span>
         <br />
         <span style="display: inline-block;white-space: nowrap;">Delivered: #:TransitTime #</span>
+        <br />
+                                <a href="\\#tabstrip-location?Carrier=#:Carrier #" style="display: inline-block;white-space: nowrap;">Find #:Carrier # Locations</a>
 
     </script>
 
