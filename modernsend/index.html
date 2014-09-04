@@ -11,6 +11,7 @@
     <script src="kendo/js/kendo.mobile.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
+
     <script src="scripts/data.js"></script>
     <script src="scripts/getRate.js"></script>
     <script src="scripts/app.js"></script>
@@ -19,30 +20,57 @@
 </head>
 <body>
     <!--Home-->
+    
+    
     <div id="tabstrip-rates"
          data-role="view"
          data-title="Rates"
+         data-show="app.getrateService.show"
          data-model="app.getrateService.viewModel">
 
 
+ <div data-role="modalview" id="userRegistration" style="width: 100%; height:100%; ">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span>Tell us about yourself</span>
+            </div>
+        </div>
 
+         <ul data-role="listview" data-style="inset">
+                <li>
+                    <label for="FirstName" class="required">First Name</label>
+                    <input id="FirstName" required validationmessage="*" />
+                </li>
+                 <li>
+                    <label for="LastName" class="required">Last Name</label>
+                    <input id="LastName" required validationmessage="*" />
+                </li>
+               <li>
+                    <label for="Email" class="required">Email</label>
+                    <input id="Email" required validationmessage="*" />
+                </li>
+        </ul>
+        <div class="buttonArea">
+                <input type="submit" id="btnCreateUser" data-role="button" data-bind="click: onCreateUser" value="Get Started" />
+            </div>
+    </div>
         <!--<ul id="artistsListView" data-role="listview" data-style="inset"></ul>-->
         <form id="rateForm">
 
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label for="from" class="required">From</label>
-                    <input type="number" id="from" placeholder="Zip Code (required)" required validationmessage="*" />
+                    <input type="number" id="from" placeholder="Zip Code" required validationmessage="*" />
                 </li>
                 <li>
                     <label for="to" class="required">To</label>
-                    <input type="number" id="to" placeholder="Zip Code (required)" required validationmessage="*" />
+                    <input type="number" id="to" placeholder="Zip Code" required validationmessage="*" />
                 </li>
                 <li>
                     <label for="txtWidth">
                         Weight
                     </label>
-                    <input type="number" id="txtWeight" placeholder="in pounds (required)" required validationmessage="*" />
+                    <input type="number" id="txtWeight" placeholder="in pounds" required validationmessage="*" />
                 </li>
                 <li>
                     <label for="txtLength">
@@ -68,50 +96,11 @@
                 <input type="submit" id="btnGetRate" data-role="button" data-bind="click: onGetRate" value="Get Rate" />
             </div>
         </form>
-        <ul id="rateListView" data-role="listview" data-style="inset"></ul>
+        <div id="rateListView" data-role="listview"></div>
                   
 
     </div>
 
-    <!--Login
-    <div id="tabstrip-login"
-    data-role="view"
-    data-title="Login"
-    data-model="app.loginService.viewModel">
-
-    <div class="view-content">
-    <div class="logo"></div>
-    <h3 data-bind="invisible: isLoggedIn">Enter your credentials:</h3>
-    <h1 class="welcome" data-bind="visible: isLoggedIn">Welcome, <span data-bind="text: username"></span>!
-    </h1>
-    <div class="buttonArea">
-    <input type="submit" id="logout" data-role="button" data-bind="click: onLogout, visible: isLoggedIn" class="login-button" value="Logout" />
-    </div>
-
-    <form data-bind="events: { keyup: checkEnter }">
-    <ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn">
-    <li>
-    <label>
-    Username
-    <input type="text" data-bind="value: username" />
-    </label>
-    </li>
-    <li>
-    <label>
-    Password
-    <input type="password" data-bind="value: password" />
-    </label>
-    </li>
-    </ul>
-
-    <div class="buttonArea">
-    <input type="submit" id="login" data-role="button" data-bind="click: onLogin, invisible: isLoggedIn" class="login-button" value="Login" />
-    </div>
-    </form>
-    </div>
-
-    </div>
-    -->
     <!--Location-->
     <div id="tabstrip-location"
          class="map"
@@ -158,6 +147,9 @@
 
     <!--Package Tracker-->
     <div id="tabstrip-tracker" data-role="view" data-title="Track" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
+        
+    
+        
         <header data-role="header">
             <div data-role="navbar">
                 <span data-role="view-title"></span>
@@ -174,7 +166,7 @@
     <div data-role="modalview" id="modalview-add" style="width: 95%; ">
         <div data-role="header">
             <div data-role="navbar">
-                <span>Tracking Shipment</span>
+                <span>Details</span>
                 <a data-click="closeModalViewAdd" data-role="button" data-align="right">Cancel</a>
             </div>
         </div>
@@ -192,8 +184,8 @@
                         <li>USPS</li>
                     </ul>
                 <li>
-                    <label for="name">#:</label>
-                    <input type="text" id="name" placeholder="enter tracking number" required validationmessage="*" />
+                    <label for="name" style="width:25%;">#:</label>
+                    <input type="text" id="name" style="width:75%;"  placeholder="enter tracking number" required validationmessage="*" />
                 </li>
             </ul>
             <div class="buttonArea">
@@ -242,6 +234,9 @@
 
     </script>
     <script>
+        
+          
+        
         function swipe(e) {
             var button = kendo.fx($(e.touch.currentTarget).find("[data-task=delete]"));
             button.expand().duration(200).play();
@@ -322,7 +317,8 @@
         }
 
         function mobileListViewPullWithEndless() {
-            var userUid = "1";
+           
+                        var userUid = localStorage.getItem('userUid');
 
             BindTrackerListView(userUid);
 
@@ -347,12 +343,13 @@
             // $("#hfTrackingNumber").val(data.trackinguid);
 
             // $("#lblPackageStatus").val(data.trackinguid);
+                        var userUid = localStorage.getItem('userUid');
 
             var deleteCommand = new kendo.data.DataSource({
                 transport: {
                     read: {
                         type: "GET",
-                        url: "http://minlarkapi.aliasmedia.com/api/Tracking/DeletePackageTracking?UserUid=1&TrackingUid=" + data.trackinguid + "",
+                        url: "http://minlarkapi.aliasmedia.com/api/Tracking/DeletePackageTracking?UserUid=" + userUid + "&TrackingUid=" + data.trackinguid + "",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -383,7 +380,8 @@
                     //}
                 },
                 requestEnd: function (e) {
-                    var userUid = "1";
+                                            var userUid = localStorage.getItem('userUid');
+
                     BindTrackerListView(userUid);
                 },
             });
@@ -456,7 +454,8 @@
         }
 
         function addNew() {
-            
+                                    var userUid = localStorage.getItem('userUid');
+
                var validator = $('input', "#formAddTrackingNumber").kendoValidator().data("kendoValidator");
             
                         if (validator.validate()) {
@@ -482,7 +481,7 @@
                 transport: {
                     read: {
                         type: "GET",
-                        url: "http://minlarkapi.aliasmedia.com/api/Tracking/SaveTrackingID?UserUid=1&TrackingUid=0&CarrierName=" + provider + "&TrackingNumber=" + $("#name").val(),
+                        url: "http://minlarkapi.aliasmedia.com/api/Tracking/SaveTrackingID?UserUid=" + userUid + "&TrackingUid=0&CarrierName=" + provider + "&TrackingNumber=" + $("#name").val(),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -513,7 +512,8 @@
                     //}
                 },
                 requestEnd: function (e) {
-                    var userUid = "1";
+                                            var userUid = localStorage.getItem('userUid');
+
                     BindTrackerListView(userUid);
                     $("#name").val("");
                 },
@@ -585,15 +585,29 @@
     </script> -->
 
     <script id="rate-list-template" type="text/x-kendo-tmpl">
-        <span style="display: inline-block;white-space: nowrap;">Carrier: #:Carrier #</span>
-        <br />
-        <span style="display: inline-block;white-space: nowrap;">Amount: $#:Charge #</span>
-        <br /> 
-        <span style="display: inline-block;white-space: nowrap;">Service: #:Service #</span>
-        <br />
-        <span style="display: inline-block;white-space: nowrap;">Delivered: #:TransitTime #</span>
-        <br />
-                                <a href="\\#tabstrip-location?Carrier=#:Carrier #" style="display: inline-block;white-space: nowrap;">Find #:Carrier # Locations</a>
+        <ul data-role="listview" data-style="inset">
+            <li>
+        <h3 style="margin:0 !important;">#:Carrier # - #:Service #</h3>
+
+    </li>
+              <li>
+                <label for="Charge" >Amount: </label>
+                <label id="Charge">#:Charge #</label>
+            </li>
+            
+            <li>
+                <label for="TransitTime" >Delivered: </label>
+                <label id="TransitTime">#:TransitTime #</label>
+            </li>
+             <li>
+                <label for="Locations" >Locations: </label>
+                <label id="Locations">
+                <a href="\\#tabstrip-location?Carrier=#:Carrier #" style="display: inline-block;white-space: nowrap;">Find #:Carrier # Locations</a>
+                </label>
+            </li>
+        </ul>
+
+      
 
     </script>
 

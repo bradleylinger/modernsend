@@ -132,18 +132,25 @@
 color:red;
     font-weight:bold;
 }
-#btnGetRate, #btnSaveTrackingNumber, #btnGoToFindTab
+#btnGetRate, #btnSaveTrackingNumber, #btnGoToFindTab, #btnCreateUser
 {
     text-align:center;
 display:block;
     margin:0 auto;
     width:65%;
 }
-.trackingDetailsButton
+.trackingDetailsButton,
+.trackingDetailsButton.km-state-active
 {
-
+background:none;
     border:none !important;
     color:black !important;
+    display:block;
+    width:100%;
+    -webkit-text-fill-color:black;
+}
+.trackingDetailsButton:hover
+{
 }
 
  #pull-with-endless-listview .delete {

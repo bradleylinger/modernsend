@@ -11,7 +11,9 @@
 
             kendo.data.ObservableObject.fn.init.apply(that, []);
             
-            var userUid = "1";
+      
+                        var userUid = localStorage.getItem('userUid');
+
                dataSource = new kendo.data.DataSource({
                 serverFiltering: true,
                 transport      : {
