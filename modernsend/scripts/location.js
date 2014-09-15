@@ -30,6 +30,8 @@
                     
                     //This query takes the coordinates and turns them into a readable address
                      var  dataSource = new kendo.data.DataSource({
+                                         requestStart: _onRequestStart,
+
                         serverFiltering: true,
                         transport      : {
                             read: {
@@ -158,6 +160,8 @@
                provider= "All";
             
             var  dataSource = new kendo.data.DataSource({
+                                requestStart: _onRequestStart,
+
                 serverFiltering: true,
                 transport      : {
                     read: {
@@ -302,6 +306,8 @@ var infoWindows = [];
 
             //resize the map in case the orientation has been changed while showing other tab
             google.maps.event.trigger(map, "resize");
+            
+            showRegistration();
         },
 
         hide: function () {

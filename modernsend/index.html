@@ -12,7 +12,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
 
-    <script src="scripts/data.js"></script>
+    <script src="scripts/common.js"></script>
     <script src="scripts/getRate.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/location.js"></script>
@@ -20,12 +20,26 @@
 </head>
 <body>
     <!--Home-->
+    <div id="error-view" data-role="modalview" style="width: 100%; height:100%; ">
+    <div class="error-header" data-role="header" style="display: none;">
+        <div data-role="navbar">
+           
+            <span>Error</span>
+            <a data-click="closeError" data-role="button" data-align="right">Close</a>
+        </div>
+    </div>
+ 
+        <span >
+     <div class="message" style="margin:10px;"></div> </span> 
+</div>
     
+    
+   
     
     <div id="tabstrip-rates"
          data-role="view"
          data-title="Rates"
-         data-show="app.getrateService.show"
+         data-show="showRegistration"
          data-model="app.getrateService.viewModel">
 
 
@@ -146,7 +160,7 @@
     </div>
 
     <!--Package Tracker-->
-    <div id="tabstrip-tracker" data-role="view" data-title="Track" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
+    <div id="tabstrip-tracker" data-role="view" data-show="showRegistration" data-title="Track" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
         
     
         
@@ -269,6 +283,8 @@
 
         function BindTrackerListView(userUid) {
             var dataSource = new kendo.data.DataSource({
+                requestStart: _onRequestStart,
+
                 transport: {
                     read: {
                         type: "GET",
@@ -346,6 +362,8 @@
                         var userUid = localStorage.getItem('userUid');
 
             var deleteCommand = new kendo.data.DataSource({
+                                requestStart: _onRequestStart,
+
                 transport: {
                     read: {
                         type: "GET",
@@ -397,6 +415,8 @@
             // $("#lblPackageStatus").val(data.trackinguid);
 
             var trackingDetailsDataSource = new kendo.data.DataSource({
+                                requestStart: _onRequestStart,
+
                 transport: {
                     read: {
                         type: "GET",
@@ -478,6 +498,8 @@
                 provider = "USPS";
             
             var addCommand = new kendo.data.DataSource({
+                                requestStart: _onRequestStart,
+
                 transport: {
                     read: {
                         type: "GET",
@@ -553,14 +575,14 @@
         <!--Footer-->
         <div data-role="footer">
             <div data-role="tabstrip">
-                <a href="#tabstrip-rates" class="rates">Rate</a>
+                <a href="#tabstrip-rates" class="tab_rates">Rate</a>
                 <!--  <a href="#tabstrip-rates" data-icon="home">Rates</a>-->
                 <!--    <a href="#tabstrip-login" data-icon="contacts">Login</a> -->
-                <a href="#tabstrip-location">Find</a>
+                <a href="#tabstrip-location" class="tab_find">Find</a>
 
                 <!--
                 <a href="#tabstrip-location" data-icon="search">Drop Off Locations</a>-->
-                <a href="#tabstrip-tracker">Track</a>
+                <a href="#tabstrip-tracker" class="tab_track">Track</a>
                 <!--  <a href="#tabstrip-tracker" data-icon="globe">Tracker</a> -->
             </div>
         </div>

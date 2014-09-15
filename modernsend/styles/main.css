@@ -162,6 +162,26 @@ background:none;
         background-color: #bd2729;
         color: #fff;
     }
+.km-footer .km-icon
+{
+ background-size:36px !important;
+    width:36px !important;
+    height:36px !important;
+    -webkit-background-clip: inherit !important;
+}
+.tab_rates .km-icon
+{
+        background-image: url(../styles/images/rate_small.png) !important;
+}
+.tab_find .km-icon
+{
+        background-image: url(../styles/images/find_small.png) !important;
+}
+.tab_track .km-icon
+{
+        background-image: url(../styles/images/track_small.png) !important;
+
+}
 /* RETINA DISPLAY STYLES */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
     .welcome-image {

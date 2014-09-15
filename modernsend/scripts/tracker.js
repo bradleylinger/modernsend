@@ -15,6 +15,8 @@
                         var userUid = localStorage.getItem('userUid');
 
                dataSource = new kendo.data.DataSource({
+                                   requestStart: _onRequestStart,
+
                 serverFiltering: true,
                 transport      : {
                     read: {

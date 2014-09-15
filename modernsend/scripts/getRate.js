@@ -14,6 +14,7 @@
                     	onCreateUser:  function () {
 
             var dataSource = new kendo.data.DataSource({
+                requestStart: _onRequestStart,
                 transport: {
                     read: {
                         type: "GET",
@@ -35,7 +36,7 @@
                 },
                 schema: {
                     data: function (data) {
-                        return data;
+                        return data.Data;
                     }
                 },
                   requestEnd: function (e) {
@@ -44,13 +45,10 @@
 
                       //close popup
                       //store uid in db
-                    	},
-
-                serverPaging: false,
-                pageSize: 1000
+                    	}
             });
 			dataSource.read();
-         $("#userRegistration").kendoMobileModalView("close");
+                             $("#userRegistration").kendoMobileModalView("close");
         },
         	onGetRate:  function () {
                     
@@ -71,6 +69,7 @@
            
 
             var rates = new kendo.data.DataSource({
+                    requestStart: _onRequestStart,
                 serverFiltering: true,
                 transport      : {
                     read: {
@@ -113,14 +112,7 @@
     });
  
     app.getrateService = {
-         show: function () {
-            var userUid = localStorage.getItem('userUid');
-            if(userUid == null)
-            {
-                    $("#userRegistration").kendoMobileModalView("open");
-
-        }
-        },
+     
         
         viewModel: new GetRateViewModel()
     };
