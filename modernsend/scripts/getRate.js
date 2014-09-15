@@ -17,7 +17,7 @@
                 transport: {
                     read: {
                         type: "GET",
-                        url: "http://minlarkapi.aliasmedia.com/api/User/CreateUser?FirstName=" + $("#FirstName").val() + "LastName=" + $("#LastName").val() + "Email=" + $("#Email").val() + "",
+                        url: "http://minlarkapi.aliasmedia.com/api/User/CreateUser?FirstName=" + $("#FirstName").val() + "&LastName=" + $("#LastName").val() + "&Email=" + $("#Email").val() + "",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         error: function (xhr, ajaxOptions, thrownError) {

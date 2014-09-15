@@ -176,31 +176,42 @@
                 }
                 },
                      requestEnd: function (e) {
-
+var infoWindows = [];
                          app.locationService.viewModel.initializeNewMap();
 
                          var locationValues = $.parseJSON(e.response.Data);
 
                         $.each(locationValues.Locations, function() {
                          	position = new google.maps.LatLng(this.Latitude, this.Longitude);
+                            var iconImage = "";
+                             if(this.Carrier == "FedEx")
+                iconImage = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+            else if(this.Carrier == "UPS")
+                iconImage = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+            else if(this.Carrier == "USPS")
+                iconImage = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
                            var newMarker = new google.maps.Marker({
                                 map: map,
-                              url: 'maps://?q=dallas',
+                              //url: 'maps://?q=dallas',
                                 clickable: true,
-
+                               icon: iconImage,
                                 position: position,
-                                          animation: google.maps.Animation.DROP,
-                                title:"asdf"
+                                animation: google.maps.Animation.DROP,
+                                title:this.Description
 
                             });
-                            
                                  var streetAddress =  encodeURIComponent(this.Street + "," + this.City + "," + this.State + "," + this.PostalCode);
                              var infowindow = new google.maps.InfoWindow({
-                                  content: "<h3>" + this.Carrier + "</h3><a href='maps://?q=" + streetAddress  + "'>Get Directions</a>"
+                                  content: "<h3>" + this.Carrier + "</h3><p>"+ this.Description + "</p><a href='maps://?q=" + streetAddress  + "'>Get Directions</a>"
                               });
 
                               google.maps.event.addListener(newMarker, 'click', function() {
+
+                                   $.each(infoWindows, function() {
+                                       this.close();
+                                   });
                                 infowindow.open(map,newMarker);
+                                  infoWindows.push(infowindow);
                               });
 
                         });
@@ -222,14 +233,14 @@
             
 		},
         markerClick: function(marker) {
-            if (marker.getAnimation() != null) {
-                alert("asdf");
-                marker.setAnimation(null);
-              } else {
-                                  alert("qwer");
+            //if (marker.getAnimation() != null) {
+           //     alert("asdf");
+            //    marker.setAnimation(null);
+            //  } else {
+              //                    alert("qwer");
 
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-              }
+              //  marker.setAnimation(google.maps.Animation.BOUNCE);
+             // }
         },
         initializeNewMap: function() {
             var mapOptions;
