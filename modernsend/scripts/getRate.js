@@ -11,7 +11,18 @@
       
        
   },
+
                     	onCreateUser:  function () {
+                            
+                              var validator = $("#RegistrationForm").kendoValidator().data("kendoValidator");
+                  
+            
+                        if (validator.validate()) {
+                            
+                        } else {
+                            
+                            return;
+                        }
 
             var dataSource = new kendo.data.DataSource({
                 requestStart: _onRequestStart,
@@ -53,17 +64,13 @@
         	onGetRate:  function () {
                     
 
-          var validator = $('input', "#rateForm").kendoValidator().data("kendoValidator"),
-                    status = $(".status");
+          var validator = $("#rateForm").kendoValidator().data("kendoValidator");
+                  
             
                         if (validator.validate()) {
-                            status.text("")
-                                .removeClass("invalid")
-                                .addClass("valid");
+                            
                         } else {
-                            status.text("")
-                                .removeClass("valid")
-                                .addClass("invalid");
+                            
                             return;
                         }
            

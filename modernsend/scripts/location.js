@@ -30,7 +30,14 @@
                     
                     //This query takes the coordinates and turns them into a readable address
                      var  dataSource = new kendo.data.DataSource({
-                                         requestStart: _onRequestStart,
+                                         requestStart:  function()
+                         {
+                             if(_onRequestStart() == false)
+                             {
+                                 that._isLoading = false;
+                                that.toggleLoading();
+                             }
+                         },
 
                         serverFiltering: true,
                         transport      : {
@@ -160,7 +167,14 @@
                provider= "All";
             
             var  dataSource = new kendo.data.DataSource({
-                                requestStart: _onRequestStart,
+                                requestStart:  function()
+                         {
+                             if(_onRequestStart() == false)
+                             {
+                                 that._isLoading = false;
+                                that.toggleLoading();
+                             }
+                         },
 
                 serverFiltering: true,
                 transport      : {
@@ -206,7 +220,7 @@ var infoWindows = [];
                             });
                                  var streetAddress =  encodeURIComponent(this.Street + "," + this.City + "," + this.State + "," + this.PostalCode);
                              var infowindow = new google.maps.InfoWindow({
-                                  content: "<h3>" + this.Carrier + "</h3><p>"+ this.Description + "</p><a href='maps://?q=" + streetAddress  + "'>Get Directions</a>"
+                                  content: "<h3 class='locationTitle'>" + this.Carrier + "</h3><p class='locationDescription'>"+ this.Description + "</p><a  class='locationDirections' href='maps://?q=" + streetAddress  + "'>Get Directions</a>"
                               });
 
                               google.maps.event.addListener(newMarker, 'click', function() {
@@ -233,7 +247,10 @@ var infoWindows = [];
                 }
             });
             
-            dataSource.read();
+            
+              dataSource.read();  
+            
+            
             
 		},
         markerClick: function(marker) {

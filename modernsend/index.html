@@ -49,67 +49,70 @@
                 <span>Tell us about yourself</span>
             </div>
         </div>
+<div id="RegistrationForm">
+    
 
          <ul data-role="listview" data-style="inset">
                 <li>
                     <label for="FirstName" class="required">First Name</label>
-                    <input id="FirstName" required validationmessage="*" />
+                    <input id="FirstName" name="FirstName" required data-required-msg="*"  />
                 </li>
                  <li>
                     <label for="LastName" class="required">Last Name</label>
-                    <input id="LastName" required validationmessage="*" />
+                    <input id="LastName" name="LastName" required data-required-msg="*" />
                 </li>
                <li>
                     <label for="Email" class="required">Email</label>
-                    <input id="Email" required validationmessage="*" />
+                    <input id="Email" name="Email" required data-required-msg="*" />
                 </li>
         </ul>
         <div class="buttonArea">
                 <input type="submit" id="btnCreateUser" data-role="button" data-bind="click: onCreateUser" value="Get Started" />
             </div>
     </div>
+    </div>
         <!--<ul id="artistsListView" data-role="listview" data-style="inset"></ul>-->
-        <form id="rateForm">
+        <div id="rateForm">
 
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label for="from" class="required">From</label>
-                    <input type="number" id="from" placeholder="Postal Code" required validationmessage="*" />
+                    <input type="number" id="from" name="From" placeholder="Postal Code" required data-required-msg="*"   />
                 </li>
                 <li>
                     <label for="to" class="required">To</label>
-                    <input type="number" id="to" placeholder="Postal Code" required validationmessage="*" />
+                    <input type="number" id="to" name="To" placeholder="Postal Code" required data-required-msg="*" />
                 </li>
                 <li>
                     <label for="txtWidth">
                         Weight
                     </label>
-                    <input type="number" id="txtWeight" placeholder="in pounds" required validationmessage="*" />
+                    <input type="number" id="txtWeight"  name="Weight" placeholder="in pounds" required data-required-msg="*" />
                 </li>
                 <li>
                     <label for="txtLength">
                         Length
                     </label>
-                    <input type="number" id="txtLength" placeholder="in inches" required validationmessage="*" />
+                    <input type="number" id="txtLength"  name="Length" placeholder="in inches" required data-required-msg="*" />
                 </li>
                 <li>
                     <label for="txtHeight">
                         Height
                     </label>
-                    <input type="number" id="txtHeight" placeholder="in inches" required validationmessage="*" />
+                    <input type="number" id="txtHeight"  name="Height" placeholder="in inches" required data-required-msg="*" />
                 </li>
                 <li>
                     <label for="txtWeight">
                         Width
                     </label>
-                    <input type="number" id="txtWidth" placeholder="in inches" required validationmessage="*" />
+                    <input type="number" id="txtWidth" name="Width" placeholder="in inches" required data-required-msg="*"  />
                 </li>
 
             </ul>
             <div class="buttonArea">
-                <input type="submit" id="btnGetRate" data-role="button" data-bind="click: onGetRate" value="Get Rate" />
+                <input type="button" id="btnGetRate" data-role="button" data-bind="click: onGetRate" value="Get Rate" />
             </div>
-        </form>
+        </div>
         <div id="rateListView" data-role="listview"></div>
                   
 
@@ -187,7 +190,7 @@
 
 
 
-        <form id="formAddTrackingNumber">
+        <div id="formAddTrackingNumber">
 
 
             <ul data-role="listview" data-style="inset">
@@ -199,7 +202,7 @@
                     </ul>
                 <li>
                     <label for="name" style="width:25%;">#:</label>
-                    <input type="text" id="name" style="width:75%;"  placeholder="enter tracking number" required validationmessage="*" />
+                    <input type="text" id="name" name="trackingNumber" style="width:75%;"  placeholder="enter tracking number" required validationmessage="*" />
                 </li>
             </ul>
             <div class="buttonArea">
@@ -207,7 +210,7 @@
                 <a data-click="addNew" class="addNew" id="btnSaveTrackingNumber" type="button" data-role="button">Save</a>
             </div>
             <br>
-        </form>
+        </div>
     </div>
 
     <div data-role="modalview" id="packageTrackingDetailsModalView" style="width: 95%; height:90%; ">
@@ -476,7 +479,7 @@
         function addNew() {
                                     var userUid = localStorage.getItem('userUid');
 
-               var validator = $('input', "#formAddTrackingNumber").kendoValidator().data("kendoValidator");
+               var validator = $("#formAddTrackingNumber").kendoValidator().data("kendoValidator");
             
                         if (validator.validate()) {
                             
@@ -625,6 +628,13 @@
                 <label for="Locations" >Locations: </label>
                 <label id="Locations">
                 <a href="\\#tabstrip-location?Carrier=#:Carrier #" style="display: inline-block;white-space: nowrap;">Find #:Carrier # Locations</a>
+                </label>
+            </li>
+             <li>
+                <label for="CarrierURL" >Website: </label>
+                <label id="CarrierURL">
+                <a href="\#" onclick="onOpenBrowser('#:CarrierURL #');">Go to the #:Carrier # Website </a>
+
                 </label>
             </li>
         </ul>

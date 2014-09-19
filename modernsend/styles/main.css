@@ -182,6 +182,32 @@ background:none;
         background-image: url(../styles/images/track_small.png) !important;
 
 }
+
+/*----- Start Android Hack: Rearrange default android layout and allow display of items with data-role of navbar ------*/
+
+.km-root .km-android .km-view {
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+}
+
+.km-android .km-view-title
+{
+    visibility: visible;
+}
+
+.km-android #tabstrip-location .km-stretched-view
+{
+    -webkit-flex-direction:inherit;
+    flex-direction:initial;
+}
+.locationTitle, .locationDescription, .locationDirections
+{
+    color:#000 !important;
+}
+
+/*---- End Android Hack ----*/
+
+/*---- end custom styles ---*/
 /* RETINA DISPLAY STYLES */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
     .welcome-image {

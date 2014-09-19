@@ -23,12 +23,27 @@ $(function () {
     return navigator.connection.type != Connection.NONE;
 };
     
+    onOpenBrowser =  function (url) {
+if (kendo.support.mobileOS.android) {
+        navigator.app.loadUrl(url, { openExternal:true } );
+    }
+    if (kendo.support.mobileOS.ios) {
+        window.open(url, '_system');
+    }
+    };
+            
+        
+    
         _onRequestStart = function (event) {
     if ( !isOnline() ) {
         showError("No network connection available. Please try again when online.");
-        event.preventDefault();
+        //event.preventDefault();
         return false;
     }
+            else
+            {
+            return true;
+            }
 };
     
     showRegistration = function () {
