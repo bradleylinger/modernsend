@@ -53,7 +53,12 @@
         <string>????</string>
         <key>CFBundleVersion</key>
         <string>$BundleVersion$</string>
+        
+        <key>CFBundleShortVersionString</key>
+        <string>$BundleVersion$</string>
+        
         <key>LSRequiresIPhoneOS</key>
+        
         <true/>
     </dict>
 </plist>

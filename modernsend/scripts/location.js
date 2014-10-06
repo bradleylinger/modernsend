@@ -43,7 +43,7 @@
                         transport      : {
                             read: {
                                 type       : "GET",
-                                url        : "http://minlarkapi.aliasmedia.com/api/Dropoff/GetValidatedAddress?Address=" + position.coords.latitude + "," + position.coords.longitude,
+                                url        : "http://api.modernsend.com/api/Dropoff/GetValidatedAddress?Address=" + position.coords.latitude + "," + position.coords.longitude,
                                 contentType: "application/json; charset=utf-8",
                                 dataType   : "json",
                                 error      : function (xhr, ajaxOptions, thrownError) {
@@ -180,7 +180,7 @@
                 transport      : {
                     read: {
                         type       : "GET",
-                        url        : "http://minlarkapi.aliasmedia.com/api/Dropoff/Get" + provider + "Locations?address=" + $("#map-address").val(),
+                        url        : "http://api.modernsend.com/api/Dropoff/Get" + provider + "Locations?address=" + $("#map-address").val(),
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
                         error      : function (xhr, ajaxOptions, thrownError) {

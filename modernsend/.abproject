@@ -3,11 +3,11 @@
   "IsRunnable": "true",
   "ProjectGuid": "d78d6ddf-9693-4066-a2dc-5084cddc83c9",
   "projectVersion": 1,
-  "AppIdentifier": "com.aliasmedia.modernsend",
+  "AppIdentifier": "com.minlark.modernsend",
   "DisplayName": "modernsend",
   "Author": "",
   "Description": "modernsend",
-  "BundleVersion": "1.21",
+  "BundleVersion": "1.01",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -23,13 +23,11 @@
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.5.0",
   "CorePlugins": [
-    "com.telerik.mobiletesting",
     "com.telerik.plugin.eqatecanalytics",
     "org.apache.cordova.battery-status",
     "org.apache.cordova.camera",
     "org.apache.cordova.console",
     "org.apache.cordova.contacts",
-    "org.apache.cordova.device",
     "org.apache.cordova.device-motion",
     "org.apache.cordova.device-orientation",
     "org.apache.cordova.dialogs",
@@ -76,5 +74,10 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "Framework": "Cordova"
+  "Framework": "Cordova",
+  "CordovaPluginVariables": {
+    "com.telerik.mobiletesting": {
+      "IOS_APP_URL": ""
+    }
+  }
 }

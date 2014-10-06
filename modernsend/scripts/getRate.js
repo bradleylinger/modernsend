@@ -5,7 +5,7 @@
     	GetRateViewModel = kendo.data.ObservableObject.extend({
             
   init: function () {
-            var that = this
+             var that = this 
 
             kendo.data.ObservableObject.fn.init.apply(that, []);
       
@@ -29,7 +29,7 @@
                 transport: {
                     read: {
                         type: "GET",
-                        url: "http://minlarkapi.aliasmedia.com/api/User/CreateUser?FirstName=" + $("#FirstName").val() + "&LastName=" + $("#LastName").val() + "&Email=" + $("#Email").val() + "",
+                        url: "http://api.modernsend.com/api/User/CreateUser?FirstName=" + $("#FirstName").val() + "&LastName=" + $("#LastName").val() + "&Email=" + $("#Email").val() + "",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -81,7 +81,7 @@
                 transport      : {
                     read: {
                         type       : "GET",
-                        url        : "http://minlarkapi.aliasmedia.com/api/Rate/GetRates?To=" + $("#to").val() +"&From=" + $("#from").val() + "&Weight=" + $("#txtWeight").val() + "&Length=" + $("#txtLength").val() + "&Height=" + $("#txtHeight").val() + "&Width=" + $("#txtWidth").val(),
+                        url        : "http://api.modernsend.com/api/Rate/GetRates?To=" + $("#to").val() +"&From=" + $("#from").val() + "&Weight=" + $("#txtWeight").val() + "&Length=" + $("#txtLength").val() + "&Height=" + $("#txtHeight").val() + "&Width=" + $("#txtWidth").val(),
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
                         error      : function (xhr, ajaxOptions, thrownError) {
