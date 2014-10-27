@@ -7,7 +7,7 @@
   "DisplayName": "modernsend",
   "Author": "",
   "Description": "modernsend",
-  "BundleVersion": "1.01",
+  "BundleVersion": "1.00",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -24,24 +24,11 @@
   "FrameworkVersion": "3.5.0",
   "CorePlugins": [
     "com.telerik.plugin.eqatecanalytics",
-    "org.apache.cordova.battery-status",
-    "org.apache.cordova.camera",
-    "org.apache.cordova.console",
-    "org.apache.cordova.contacts",
-    "org.apache.cordova.device-motion",
     "org.apache.cordova.device-orientation",
-    "org.apache.cordova.dialogs",
-    "org.apache.cordova.file",
-    "org.apache.cordova.file-transfer",
     "org.apache.cordova.geolocation",
-    "org.apache.cordova.globalization",
-    "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.media",
-    "org.apache.cordova.media-capture",
     "org.apache.cordova.network-information",
     "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.vibration"
+    "org.apache.cordova.statusbar"
   ],
   "AndroidPermissions": [
     "android.permission.ACCESS_COARSE_LOCATION",
