@@ -109,7 +109,8 @@
                 </li>
 
             </ul>
-            <p style="font-size:11px;">*Rates shown here may be different than the actual charges for your shipment. Differences may occur based on actual weight, dimensions, currency conversion rate and other factors.</p>
+            <p style="font-size:11px;">*Shipping rates shown may be different than the actual shipping charges for your shipment. Differences may 
+                occur based on final service selected, actual weight, package dimensions, currency conversion rate, and other factors.</p>
             <div class="buttonArea">
                 <input type="button" id="btnGetRate" data-role="button" data-bind="click: onGetRate" value="Get Rate" />
             </div>
@@ -348,13 +349,15 @@
             $("#addNew").click(function () {
                 
                 
-                
+                var trackUid = $("#name").val();
                 loader.show();
                 addProductDataSource.add({
-                    TrackingNumber: $("#name").val()
+                    TrackingNumber: trackUid
                     //ProductName: $("#name").val(),
                     //UnitPrice: Math.floor((Math.random() * 10) + 1)
                 });
+                
+
             });
         }
 
@@ -412,19 +415,14 @@
 
         }
 
-        function viewPackgeTrackingDetails_Click(e) {
-            var data = e.button.data();
-            // $("#hfTrackingNumber").val(data.trackinguid);
-
-            // $("#lblPackageStatus").val(data.trackinguid);
-
+        function showPackageModal(trackinguid) {
             var trackingDetailsDataSource = new kendo.data.DataSource({
                                 requestStart: _onRequestStart,
 
                 transport: {
                     read: {
                         type: "GET",
-                        url: "http://api.modernsend.com/api/Tracking/TrackPackage?TrackingUid=" + data.trackinguid + "",
+                        url: "http://api.modernsend.com/api/Tracking/TrackPackage?TrackingUid=" + trackinguid,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -460,11 +458,16 @@
             $("#trackingDetailsListView").kendoMobileListView({
                 dataSource: trackingDetailsDataSource,
                 template: $("#trackingDetailsTemplate").text(),
-
-
             });
 
             $("#packageTrackingDetailsModalView").kendoMobileModalView("open");
+            }
+        
+        function viewPackgeTrackingDetails_Click(e) {
+            var data = e.button.data();
+           
+            showPackageModal(data.trackinguid);
+            
         }
 
 
@@ -493,7 +496,7 @@
             var providerSelector = $("#btnPackageTrackProvider").data("kendoMobileButtonGroup");
      
                 var index = providerSelector.selectedIndex;
-
+var trackingUid;
              if(index == 0)
                 provider = "FedEx";
             else if(index == 1)
@@ -523,6 +526,8 @@
                 schema: {
 
                     data: function (data) {
+                        trackingUid = data.TrackingUid;
+                                                    showPackageModal(trackingUid);
                         return data.Success;
                     }
 
@@ -542,6 +547,7 @@
 
                     BindTrackerListView(userUid);
                     $("#name").val("");
+
                 },
             });
 
