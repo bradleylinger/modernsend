@@ -26,6 +26,7 @@
     "com.telerik.plugin.eqatecanalytics",
     "org.apache.cordova.device-orientation",
     "org.apache.cordova.geolocation",
+    "org.apache.cordova.inappbrowser",
     "org.apache.cordova.network-information",
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.statusbar"
@@ -62,9 +63,5 @@
     "ID_RESOLUTION_HD720P"
   ],
   "Framework": "Cordova",
-  "CordovaPluginVariables": {
-    "com.telerik.mobiletesting": {
-      "IOS_APP_URL": ""
-    }
-  }
+  "CordovaPluginVariables": {}
 }
